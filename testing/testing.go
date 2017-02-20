@@ -33,7 +33,7 @@ func main() {
 
 	queue.Push(11)
 	fmt.Println("queue.Push(11)")
-	val, _ := queue.Peek()
+	val, _ = queue.Peek()
 	fmt.Println("queue.Peek()", val)
 
 	queue.Push(22)

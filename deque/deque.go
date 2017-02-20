@@ -1,15 +1,21 @@
 package deque
 
 import (
-	"github.com/noti5/practice/node"
+	"github.com/noti5/practice/value"
 	"errors"
 )
 
-type Value node.Value
+type Value value.Value
+
+type Node struct {
+	Next *Node
+	Prev *Node
+	Val Value
+}
 
 type Deque struct {
-	Head *node.Node
-	Tail *node.Node
+	Head *Node
+	Tail *Node
 	totalSize uint32
 }
 
@@ -19,7 +25,7 @@ func New() *Deque {
 }
 
 func (deque *Deque) PushFirst(item Value) {
-	node := node.Node{Val: item}
+	node := Node{Val: item}
 	currentHead := deque.Head
 	if currentHead == nil {
 		deque.Head, deque.Tail = &node, &node
@@ -31,7 +37,7 @@ func (deque *Deque) PushFirst(item Value) {
 }
 
 func (deque *Deque) PushLast(item Value) {
-	node := node.Node{Val: item}
+	node := Node{Val: item}
 	currentTail := deque.Tail
 	if currentTail == nil {
 		deque.Head, deque.Tail = &node, &node

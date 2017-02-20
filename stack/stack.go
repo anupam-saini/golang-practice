@@ -1,9 +1,11 @@
 package stack
 
 import (
-	"github.com/noti5/practice/node"
+	"github.com/noti5/practice/value"
 	"github.com/noti5/practice/deque"
 )
+
+type Value value.Value
 
 type Stack struct {
 	deque *deque.Deque
@@ -14,15 +16,15 @@ func New() *Stack {
 	return &stack
 }
 
-func (stack *Stack) Push(item node.Value) {
+func (stack *Stack) Push(item Value) {
 	stack.deque.PushFirst(item)
 }
 
-func (stack *Stack) Pop() (node.Value, error) {
+func (stack *Stack) Pop() (Value, error) {
 	return stack.deque.PopFirst()
 }
 
-func (stack *Stack) Peek() (node.Value, error) {
+func (stack *Stack) Peek() (Value, error) {
 	return stack.deque.PeekFirst()	
 }
 
