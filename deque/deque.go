@@ -7,16 +7,16 @@ import (
 
 type Value value.Value
 
-type Node struct {
-	Next *Node
-	Prev *Node
+type node struct {
+	Next *node
+	Prev *node
 	Val Value
 }
 
 type Deque struct {
-	Head *Node
-	Tail *Node
-	totalSize uint32
+	Head *node
+	Tail *node
+	TotalSize uint32
 }
 
 func New() *Deque {
@@ -25,27 +25,27 @@ func New() *Deque {
 }
 
 func (deque *Deque) PushFirst(item Value) {
-	node := Node{Val: item}
+	newNode := node{Val: item}
 	currentHead := deque.Head
 	if currentHead == nil {
-		deque.Head, deque.Tail = &node, &node
+		deque.Head, deque.Tail = &newNode, &newNode
 	} else {
-		node.Next, currentHead.Prev = currentHead, &node
-		deque.Head = &node
+		newNode.Next, currentHead.Prev = currentHead, &newNode
+		deque.Head = &newNode
 	}
-	deque.totalSize++
+	deque.TotalSize++
 }
 
 func (deque *Deque) PushLast(item Value) {
-	node := Node{Val: item}
+	newNode := node{Val: item}
 	currentTail := deque.Tail
 	if currentTail == nil {
-		deque.Head, deque.Tail = &node, &node
+		deque.Head, deque.Tail = &newNode, &newNode
 	} else {
-		node.Prev, currentTail.Next = currentTail, &node
-		deque.Tail = &node
+		newNode.Prev, currentTail.Next = currentTail, &newNode
+		deque.Tail = &newNode
 	}
-	deque.totalSize++
+	deque.TotalSize++
 }
 
 func (deque *Deque) PopFirst() (Value, error) {
@@ -54,15 +54,15 @@ func (deque *Deque) PopFirst() (Value, error) {
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		node := deque.Head
-		newHead := node.Next
+		newNode := deque.Head
+		newHead := newNode.Next
 		if newHead != nil {
 			newHead.Prev = nil
 		}
-		node.Next = nil
+		newNode.Next = nil
 		deque.Head = newHead
-		val = node.Val
-		deque.totalSize--
+		val = newNode.Val
+		deque.TotalSize--
 	}
 	return val, err
 }
@@ -73,15 +73,15 @@ func (deque *Deque) PopLast() (Value, error) {
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		node := deque.Tail
-		newTail := node.Prev
+		newNode := deque.Tail
+		newTail := newNode.Prev
 		if newTail != nil {
 			newTail.Next = nil
 		}
-		node.Prev = nil
+		newNode.Prev = nil
 		deque.Tail = newTail
-		val = node.Val
-		deque.totalSize--
+		val = newNode.Val
+		deque.TotalSize--
 	}
 	return val, err
 }
@@ -109,5 +109,5 @@ func (deque *Deque) PeekLast() (Value, error) {
 }
 
 func (deque *Deque) Size() uint32 {
-	return deque.totalSize
+	return deque.TotalSize
 }
