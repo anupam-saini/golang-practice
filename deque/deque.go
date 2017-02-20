@@ -20,8 +20,8 @@ type Deque struct {
 }
 
 func New() *Deque {
-	deque := Deque{nil, nil, 0}
-	return &deque
+	deque := new(Deque)
+	return deque
 }
 
 func (deque *Deque) PushFirst(item Value) {
