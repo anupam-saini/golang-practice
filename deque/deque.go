@@ -54,14 +54,14 @@ func (deque *Deque) PopFirst() (Value, error) {
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		newNode := deque.Head
-		newHead := newNode.Next
+		oldHead := deque.Head
+		newHead := oldHead.Next
 		if newHead != nil {
 			newHead.Prev = nil
 		}
-		newNode.Next = nil
+		oldHead.Next = nil
 		deque.Head = newHead
-		val = newNode.Val
+		val = oldHead.Val
 		deque.TotalSize--
 	}
 	return val, err
@@ -73,14 +73,14 @@ func (deque *Deque) PopLast() (Value, error) {
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		newNode := deque.Tail
-		newTail := newNode.Prev
+		oldTail := deque.Tail
+		newTail := oldTail.Prev
 		if newTail != nil {
 			newTail.Next = nil
 		}
-		newNode.Prev = nil
+		oldTail.Prev = nil
 		deque.Tail = newTail
-		val = newNode.Val
+		val = oldTail.Val
 		deque.TotalSize--
 	}
 	return val, err
