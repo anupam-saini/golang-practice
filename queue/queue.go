@@ -1,11 +1,8 @@
 package queue
 
 import (
-	"github.com/noti5/practice/value"
 	"github.com/noti5/practice/deque"
 )
-
-type Value value.Value
 
 type Queue struct {
 	deque *deque.Deque
@@ -16,15 +13,15 @@ func New() *Queue {
 	return &queue
 }
 
-func (queue *Queue) Push(item Value) {
+func (queue *Queue) Push(item interface{}) {
 	queue.deque.PushFirst(item)
 }
 
-func (queue *Queue) Pop() (Value, error) {
+func (queue *Queue) Pop() (interface{}, error) {
 	return queue.deque.PopLast()
 }
 
-func (queue *Queue) Peek() (Value, error) {
+func (queue *Queue) Peek() (interface{}, error) {
 	return queue.deque.PeekFirst()	
 }
 

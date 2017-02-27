@@ -1,16 +1,13 @@
 package deque
 
 import (
-	"github.com/noti5/practice/value"
 	"errors"
 )
-
-type Value value.Value
 
 type node struct {
 	Next *node
 	Prev *node
-	Val Value
+	Val interface{}
 }
 
 type Deque struct {
@@ -24,7 +21,7 @@ func New() *Deque {
 	return deque
 }
 
-func (deque *Deque) PushFirst(item Value) {
+func (deque *Deque) PushFirst(item interface{}) {
 	newNode := node{Val: item}
 	currentHead := deque.Head
 	if currentHead == nil {
@@ -36,7 +33,7 @@ func (deque *Deque) PushFirst(item Value) {
 	deque.TotalSize++
 }
 
-func (deque *Deque) PushLast(item Value) {
+func (deque *Deque) PushLast(item interface{}) {
 	newNode := node{Val: item}
 	currentTail := deque.Tail
 	if currentTail == nil {
@@ -48,8 +45,8 @@ func (deque *Deque) PushLast(item Value) {
 	deque.TotalSize++
 }
 
-func (deque *Deque) PopFirst() (Value, error) {
-	var val Value
+func (deque *Deque) PopFirst() (interface{}, error) {
+	var val interface{}
 	var err error
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
@@ -67,8 +64,8 @@ func (deque *Deque) PopFirst() (Value, error) {
 	return val, err
 }
 
-func (deque *Deque) PopLast() (Value, error) {
-	var val Value
+func (deque *Deque) PopLast() (interface{}, error) {
+	var val interface{}
 	var err error
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
@@ -86,8 +83,8 @@ func (deque *Deque) PopLast() (Value, error) {
 	return val, err
 }
 
-func (deque *Deque) PeekFirst() (Value, error) {
-	var val Value
+func (deque *Deque) PeekFirst() (interface{}, error) {
+	var val interface{}
 	var err error
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
@@ -97,8 +94,8 @@ func (deque *Deque) PeekFirst() (Value, error) {
 	return val, err
 }
 
-func (deque *Deque) PeekLast() (Value, error) {
-	var val Value
+func (deque *Deque) PeekLast() (interface{}, error) {
+	var val interface{}
 	var err error
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
