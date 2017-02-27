@@ -7,7 +7,7 @@ import (
 type node struct {
 	Next *node
 	Prev *node
-	Val interface{}
+	Value interface{}
 }
 
 type Deque struct {
@@ -22,7 +22,7 @@ func New() *Deque {
 }
 
 func (deque *Deque) PushFirst(item interface{}) {
-	newNode := node{Val: item}
+	newNode := node{Value: item}
 	currentHead := deque.Head
 	if currentHead == nil {
 		deque.Head, deque.Tail = &newNode, &newNode
@@ -34,7 +34,7 @@ func (deque *Deque) PushFirst(item interface{}) {
 }
 
 func (deque *Deque) PushLast(item interface{}) {
-	newNode := node{Val: item}
+	newNode := node{Value: item}
 	currentTail := deque.Tail
 	if currentTail == nil {
 		deque.Head, deque.Tail = &newNode, &newNode
@@ -46,7 +46,7 @@ func (deque *Deque) PushLast(item interface{}) {
 }
 
 func (deque *Deque) PopFirst() (interface{}, error) {
-	var val interface{}
+	var value interface{}
 	var err error
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
@@ -58,14 +58,14 @@ func (deque *Deque) PopFirst() (interface{}, error) {
 		}
 		oldHead.Next = nil
 		deque.Head = newHead
-		val = oldHead.Val
+		value = oldHead.Value
 		deque.TotalSize--
 	}
-	return val, err
+	return value, err
 }
 
 func (deque *Deque) PopLast() (interface{}, error) {
-	var val interface{}
+	var value interface{}
 	var err error
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
@@ -77,32 +77,32 @@ func (deque *Deque) PopLast() (interface{}, error) {
 		}
 		oldTail.Prev = nil
 		deque.Tail = newTail
-		val = oldTail.Val
+		value = oldTail.Value
 		deque.TotalSize--
 	}
-	return val, err
+	return value, err
 }
 
 func (deque *Deque) PeekFirst() (interface{}, error) {
-	var val interface{}
+	var value interface{}
 	var err error
 	if deque.Head == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		val = deque.Head.Val
+		value = deque.Head.Value
 	}
-	return val, err
+	return value, err
 }
 
 func (deque *Deque) PeekLast() (interface{}, error) {
-	var val interface{}
+	var value interface{}
 	var err error
 	if deque.Tail == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		val = deque.Tail.Val
+		value = deque.Tail.Value
 	}
-	return val, err
+	return value, err
 }
 
 func (deque *Deque) Size() uint32 {
