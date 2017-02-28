@@ -2,18 +2,20 @@ package deque
 
 import (
 	"errors"
+	"sync"
 )
 
 type node struct {
-	Next *node
-	Prev *node
-	Value interface{}
+	next *node
+	prev *node
+	value interface{}
 }
 
 type Deque struct {
-	Head *node
-	Tail *node
-	TotalSize uint32
+	head *node
+	tail *node
+	totalSize uint32
+	mux sync.Mutex
 }
 
 func New() *Deque {
@@ -22,89 +24,103 @@ func New() *Deque {
 }
 
 func (deque *Deque) PushFirst(item interface{}) {
-	newNode := node{Value: item}
-	currentHead := deque.Head
+	deque.mux.Lock()
+	newNode := node{value: item}
+	currentHead := deque.head
 	if currentHead == nil {
-		deque.Head, deque.Tail = &newNode, &newNode
+		deque.head, deque.tail = &newNode, &newNode
 	} else {
-		newNode.Next, currentHead.Prev = currentHead, &newNode
-		deque.Head = &newNode
+		newNode.next, currentHead.prev = currentHead, &newNode
+		deque.head = &newNode
 	}
-	deque.TotalSize++
+	deque.totalSize++
+	deque.mux.Unlock()
 }
 
 func (deque *Deque) PushLast(item interface{}) {
-	newNode := node{Value: item}
-	currentTail := deque.Tail
+	deque.mux.Lock()
+	newNode := node{value: item}
+	currentTail := deque.tail
 	if currentTail == nil {
-		deque.Head, deque.Tail = &newNode, &newNode
+		deque.head, deque.tail = &newNode, &newNode
 	} else {
-		newNode.Prev, currentTail.Next = currentTail, &newNode
-		deque.Tail = &newNode
+		newNode.prev, currentTail.next = currentTail, &newNode
+		deque.tail = &newNode
 	}
-	deque.TotalSize++
+	deque.totalSize++
+	deque.mux.Unlock()
 }
 
 func (deque *Deque) PopFirst() (interface{}, error) {
+	deque.mux.Lock()
 	var value interface{}
 	var err error
-	if deque.Head == nil {
+	if deque.head == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		oldHead := deque.Head
-		newHead := oldHead.Next
+		oldHead := deque.head
+		newHead := oldHead.next
 		if newHead != nil {
-			newHead.Prev = nil
+			newHead.prev = nil
 		}
-		oldHead.Next = nil
-		deque.Head = newHead
-		value = oldHead.Value
-		deque.TotalSize--
+		oldHead.next = nil
+		deque.head = newHead
+		value = oldHead.value
+		deque.totalSize--
 	}
+	defer deque.mux.Unlock()
 	return value, err
 }
 
 func (deque *Deque) PopLast() (interface{}, error) {
+	deque.mux.Lock()
 	var value interface{}
 	var err error
-	if deque.Tail == nil {
+	if deque.tail == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		oldTail := deque.Tail
-		newTail := oldTail.Prev
+		oldTail := deque.tail
+		newTail := oldTail.prev
 		if newTail != nil {
-			newTail.Next = nil
+			newTail.next = nil
 		}
-		oldTail.Prev = nil
-		deque.Tail = newTail
-		value = oldTail.Value
-		deque.TotalSize--
+		oldTail.prev = nil
+		deque.tail = newTail
+		value = oldTail.value
+		deque.totalSize--
 	}
+	defer deque.mux.Unlock()
 	return value, err
 }
 
 func (deque *Deque) PeekFirst() (interface{}, error) {
+	deque.mux.Lock()
 	var value interface{}
 	var err error
-	if deque.Head == nil {
+	if deque.head == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		value = deque.Head.Value
+		value = deque.head.value
 	}
+	defer deque.mux.Unlock()
 	return value, err
 }
 
 func (deque *Deque) PeekLast() (interface{}, error) {
+	deque.mux.Lock()
 	var value interface{}
 	var err error
-	if deque.Tail == nil {
+	if deque.tail == nil {
 		err = errors.New("No element found in the deque")
 	} else {
-		value = deque.Tail.Value
+		value = deque.tail.value
 	}
+	defer deque.mux.Unlock()
 	return value, err
 }
 
 func (deque *Deque) Size() uint32 {
-	return deque.TotalSize
+	deque.mux.Lock()
+	defer deque.mux.Unlock()
+	return deque.totalSize
 }
