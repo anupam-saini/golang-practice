@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/noti5/practice/stack"
-	"github.com/noti5/practice/queue"
+	"golang-practice/stack"
+	"golang-practice/queue"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package stack
 
 import (
-	"github.com/noti5/practice/deque"
+	"golang-practice/deque"
 )
 
 type Stack struct {
