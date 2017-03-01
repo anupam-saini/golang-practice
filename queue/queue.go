@@ -1,7 +1,7 @@
 package queue
 
 import (
-	"github.com/noti5/practice/deque"
+	"golang-practice/deque"
 )
 
 type Queue struct {
