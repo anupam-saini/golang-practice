@@ -60,10 +60,11 @@ func (deque *Deque) PopFirst() (interface{}, error) {
 	} else {
 		oldHead := deque.head
 		newHead := oldHead.next
-		if newHead != nil {
+		if newHead == nil {
+			deque.tail = nil
+		} else {
 			newHead.prev = nil
 		}
-		oldHead.next = nil
 		deque.head = newHead
 		value = oldHead.value
 		deque.totalSize--
@@ -81,10 +82,11 @@ func (deque *Deque) PopLast() (interface{}, error) {
 	} else {
 		oldTail := deque.tail
 		newTail := oldTail.prev
-		if newTail != nil {
+		if newTail == nil {
+			deque.head = nil
+		} else {
 			newTail.next = nil
 		}
-		oldTail.prev = nil
 		deque.tail = newTail
 		value = oldTail.value
 		deque.totalSize--
