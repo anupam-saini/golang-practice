@@ -1,9 +1,6 @@
 package stack
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
 func TestStack_Push(t *testing.T) {
 	var s *Stack = New()
@@ -13,7 +10,7 @@ func TestStack_Push(t *testing.T) {
 		t.Errorf("Error when popping an element from stack error=%v", err)
 	}
 	if element != 2 {
-		t.Error(fmt.Sprintf("Expecting value %d, got %d", 2, element))
+		t.Errorf("Expecting value %d, got %d", 2, element)
 	}
 }
 
